@@ -2,6 +2,7 @@ package com.connor.splashpose.ui.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -9,6 +10,7 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,8 +73,10 @@ private fun CardPhoto(photo: PhotoItem?) {
                     contentDescription = "profileImage",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .width(48.dp)
+                        .width(64.dp)
+                        .height(48.dp)
                         .padding(start = 16.dp)
+                        .clip(CircleShape)
                 )
                 Text(
                     text = photo.user?.name ?: "null",
