@@ -3,13 +3,17 @@ package com.connor.splashpose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.connor.splashpose.ui.main.HomePhotos
+import com.connor.splashpose.ui.main.HomeTopAppBar
 import com.connor.splashpose.ui.theme.SplashposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +26,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    Column {
+                        HomeTopAppBar()
+                        HomePhotos(modifier = Modifier.fillMaxSize())
+                    }
+
                 }
             }
         }
