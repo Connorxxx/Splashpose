@@ -2,6 +2,7 @@
 .gradle
 /app/src/main/java/com/connor/splashpose/ApiKey.kt
 /local.properties
+/.idea
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml

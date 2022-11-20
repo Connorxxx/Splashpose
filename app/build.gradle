@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.4.0'
     def lifecycle_version = "2.5.1"
     def koin_version= "3.2.2"
     def koin_android_version= "3.3.0"
@@ -87,6 +89,8 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     //Paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+    //GestureViews
+    implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

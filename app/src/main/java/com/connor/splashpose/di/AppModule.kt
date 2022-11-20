@@ -21,7 +21,7 @@ import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
 val appModule = module {
-    viewModel { MainViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
     single { Repository(get()) }
     single { client(get()) }
 }
