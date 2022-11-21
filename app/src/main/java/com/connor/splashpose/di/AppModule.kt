@@ -6,7 +6,9 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.connor.splashpose.ApiKey
 import com.connor.splashpose.BuildConfig
 import com.connor.splashpose.model.Repository
+import com.connor.splashpose.model.ViewRepository
 import com.connor.splashpose.vm.MainViewModel
+import com.connor.splashpose.vm.ViewViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
@@ -22,7 +24,9 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
     viewModel { MainViewModel(get(), get()) }
+    viewModel { ViewViewModel(get())}
     single { Repository(get()) }
+    single { ViewRepository(get()) }
     single { client(get()) }
 }
 
