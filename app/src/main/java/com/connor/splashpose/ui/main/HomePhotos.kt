@@ -19,32 +19,34 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
-import com.connor.splashpose.intent.Event
-import com.connor.splashpose.model.remote.ApiPath
+import coil.compose.SubcomposeAsyncImageContent
 import com.connor.splashpose.model.remote.PhotoItem
 import com.connor.splashpose.ui.common.CircularProgress
-import com.connor.splashpose.vm.MainViewModel
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun HomePhotos(modifier: Modifier = Modifier, vm: MainViewModel) {
-    Column(modifier = modifier) {
-        PhotoList(photos = vm.getPagingData(ApiPath.PHOTOS), vm)
-    }
-}
-
-@Composable
-fun PhotoList(photos: Flow<PagingData<PhotoItem>>, vm: MainViewModel) {
+fun PhotoList(
+    modifier: Modifier = Modifier,
+    photos: Flow<PagingData<PhotoItem>>,
+    onImgCLick: (String) -> Unit
+) {
     val lazyPhotoItems = photos.collectAsLazyPagingItems()
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(lazyPhotoItems) { photo ->
-            CardPhoto(photo, vm)
+            CardPhoto(photo!!, onImgCLick)
         }
         lazyPhotoItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
-                    item { CircularProgress(modifier = Modifier.fillMaxSize()) }
+                    item {
+                        CircularProgress(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 32.dp)
+                        )
+                    }
                 }
                 loadState.refresh is LoadState.Error -> {
                     item { Text(text = "Error", modifier = Modifier.fillParentMaxSize()) }
@@ -61,7 +63,10 @@ fun PhotoList(photos: Flow<PagingData<PhotoItem>>, vm: MainViewModel) {
 }
 
 @Composable
-private fun CardPhoto(photo: PhotoItem?, vm: MainViewModel) {
+private fun CardPhoto(
+    photo: PhotoItem,
+    onImgCLick: (String) -> Unit
+) {
     Card(
         elevation = CardDefaults.cardElevation(24.dp),
         modifier = Modifier
@@ -73,7 +78,7 @@ private fun CardPhoto(photo: PhotoItem?, vm: MainViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AsyncImage(
-                    model = photo!!.user!!.profileImage!!.large,
+                    model = photo.user!!.profileImage!!.large,
                     contentDescription = "profileImage",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
@@ -83,40 +88,32 @@ private fun CardPhoto(photo: PhotoItem?, vm: MainViewModel) {
                         .clip(CircleShape)
                 )
                 Text(
-                    text = photo.user?.name ?: "null",
+                    text = photo.user.name ?: "null",
                     modifier = Modifier
-                        //.align(alignment = Alignment.CenterVertically)
                         .fillMaxWidth()
                         .padding(start = 16.dp),
                     fontSize = 20.sp
                 )
             }
-            var photoState by remember {
-                mutableStateOf(photo!!.urls!!.regular)
-            }
-            var show by remember {
-                mutableStateOf(true)
-            }
-            if (show) {
-                CircularProgress(modifier = Modifier
-                    .height(400.dp)
-                    .fillMaxWidth())
-            }
             SubcomposeAsyncImage(
-                model = photoState,
+                model = photo.urls!!.regular,
                 contentDescription = "image",
-                //placeholder = painterResource(R.drawable.placeholder),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable(onClick = {
-                        vm.sendEvent(Event.ClickMainImage(photo!!.id!!))
-                    }),
-                onSuccess = {
-                    show = false
+                    .clickable(onClick = { onImgCLick(photo.id!!) }),
+            ) {
+                val state = painter.state
+                if (state is AsyncImagePainter.State.Loading) {
+                    CircularProgress(
+                        modifier = Modifier
+                            .height(400.dp)
+                            .fillMaxWidth()
+                    )
+                } else {
+                    SubcomposeAsyncImageContent()
                 }
-            )
-
+            }
         }
     }
 }
