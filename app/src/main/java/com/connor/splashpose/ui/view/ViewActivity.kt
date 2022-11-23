@@ -40,9 +40,8 @@ class ViewActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val url by remember { vm.detail(id) }.collectAsState(PhotoItem())
-                    ViewPhoto(url.urls!!.regular!!)
-                    Text(text = url.urls!!.regular!!)
+                    val photo by remember { vm.detail(id) }.collectAsState(PhotoItem())
+                    ViewPhoto(photo)
                 }
             }
         }

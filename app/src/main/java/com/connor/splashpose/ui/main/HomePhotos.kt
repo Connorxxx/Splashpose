@@ -104,7 +104,7 @@ private fun CardPhoto(
                     .clickable(onClick = { onImgCLick(photo.id!!) }),
             ) {
                 val state = painter.state
-                if (state is AsyncImagePainter.State.Loading) {
+                if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
                     CircularProgress(
                         modifier = Modifier
                             .height(400.dp)
